@@ -2,7 +2,6 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
-import PersonForm from './Person'
 import './App.css'
 
 function App() {
@@ -112,12 +111,6 @@ function App() {
             </li>
           </ul>
         </div>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="person-section">
-        <PersonForm />
       </section>
 
       <div className="ticks"></div>
