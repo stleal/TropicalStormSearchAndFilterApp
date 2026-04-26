@@ -1,22 +1,7 @@
 import { useState } from 'react'
 import Dashboard from './components/Dashboard'
 import StormSearch from './components/StormSearch'
-
-const forecastHighlights = [
-  '7-day forecast and 7-day futurecast',
-  'Current wind speed and pressure-zone tracking',
-  'Storm alert concepts inspired by regional weather coverage',
-  'Futurecast and projectile motion experiments',
-]
-
-const modelingLab = [
-  'Counterclockwise spinning-top simulation',
-  'Mini physics engine prototype with Copilot',
-  'Chart.js scatterplot and bar graph concepts',
-  'Catastrophe modeling sandbox for phase-by-phase demos',
-]
-
-const deliveryRoadmap = ['Phase 1', 'Phase 2', 'Phase 3', 'Go live with KCC development handoff']
+import { deliveryRoadmap, forecastHighlights, modelingLab } from './config/appData'
 
 const menuItems = ['Overview', 'Dashboard', 'Search'] as const
 

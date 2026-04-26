@@ -150,6 +150,21 @@ a {
   box-shadow: 0 1rem 2rem rgba(13, 110, 253, 0.12);
 }
 
+.dashboard-storm-picker {
+  min-width: min(100%, 22rem);
+}
+
+.dashboard-storm-select {
+  border-radius: 1rem;
+  border-color: rgba(44, 107, 138, 0.2);
+  box-shadow: 0 0.5rem 1.5rem rgba(24, 72, 105, 0.05);
+}
+
+.dashboard-storm-select:focus {
+  border-color: rgba(13, 110, 253, 0.35);
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
 .storm-search-panel {
   background:
     radial-gradient(circle at top right, rgba(13, 110, 253, 0.08), transparent 22rem),
@@ -248,6 +263,10 @@ a {
   }
 
   .storm-results-chip {
+    width: 100%;
+  }
+
+  .dashboard-storm-picker {
     width: 100%;
   }
 }
