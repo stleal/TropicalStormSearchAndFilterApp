@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import Dashboard from './components/Dashboard'
+import IntensityMap from './components/IntensityMap'
 import StormSearch from './components/StormSearch'
 import { deliveryRoadmap, forecastHighlights, modelingLab } from './config/appData'
 
-const menuItems = ['Overview', 'Dashboard', 'Search'] as const
+const menuItems = ['Overview', 'Dashboard', 'Search', 'Intensity Map'] as const
 
 const viewDetails = {
   Overview: {
@@ -21,11 +22,17 @@ const viewDetails = {
     ctaLabel: 'Open storm table',
     ctaHref: '#storm-search-table',
   },
+  'Intensity Map': {
+    statusLabel: 'Storm trajectory intensity workbench',
+    ctaLabel: 'Open map controls',
+    ctaHref: '#map-controls',
+  },
 } as const
 
 function App() {
   const [activeView, setActiveView] = useState<(typeof menuItems)[number]>('Overview')
   const currentView = viewDetails[activeView]
+  const contentColumnClass = activeView === 'Intensity Map' ? 'col-12' : 'col-12 col-xl-10'
 
   return (
     <div className="app-shell">
@@ -72,7 +79,7 @@ function App() {
 
       <main id="top" className="container py-4 py-md-5">
         <div className="row justify-content-center">
-          <div className="col-12 col-xl-10">
+          <div className={contentColumnClass}>
             {activeView === 'Overview' ? (
               <section id="overview" className="card border-0 shadow-lg overflow-hidden">
                 <div className="card-body p-4 p-md-5">
@@ -152,6 +159,8 @@ function App() {
               </section>
             ) : activeView === 'Dashboard' ? (
               <Dashboard />
+            ) : activeView === 'Intensity Map' ? (
+              <IntensityMap />
             ) : (
               <StormSearch />
             )}
