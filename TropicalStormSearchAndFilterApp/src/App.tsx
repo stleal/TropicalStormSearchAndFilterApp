@@ -87,12 +87,12 @@ function App() {
                     React + TypeScript Base App
                   </span>
                   <h1 className="display-5 fw-bold text-primary-emphasis mb-3">
-                    Natural Disaster Catastrophe Modeling Demo
+                    Tropical Storm Search and Filter App
                   </h1>
                   <p className="lead text-body-secondary mb-4">
-                    This Hello World sandbox is the starting point for a weather-focused modeling application built with
-                    React, TypeScript, and TSX. The goal is to combine forecast storytelling, storm tracking, and
-                    interactive data visualization in one place.
+                    This application is the starting point for a weather-focused modeling workspace built with React,
+                    TypeScript, and TSX. The goal is to combine forecast storytelling, storm tracking, and interactive
+                    data visualization in one place.
                   </p>
 
                   <div className="row g-4 mb-4">
