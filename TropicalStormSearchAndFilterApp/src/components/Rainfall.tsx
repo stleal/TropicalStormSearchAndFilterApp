@@ -6,9 +6,27 @@ type RainfallDay = {
 
 type RainfallProps = {
   data: RainfallDay[]
+  zipCode?: string
+  location?: string
+  stormName?: string
 }
 
-function Rainfall({ data }: RainfallProps) {
+function Rainfall({ data, zipCode, location, stormName }: RainfallProps) {
+  if (data.length === 0) {
+    return (
+      <section id="rainfall" className="card border-0 shadow-sm section-anchor h-100">
+        <div className="card-body p-4">
+          <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-3">
+            <div>
+              <h3 className="h4 mb-1">Rainfall Trend</h3>
+              <p className="text-body-secondary mb-0">No rainfall data is available for the current storm and ZIP selection.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   const wettestDay = data.reduce((highest, day) => (day.inches > highest.inches ? day : highest), data[0])
 
   return (
@@ -17,7 +35,11 @@ function Rainfall({ data }: RainfallProps) {
         <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-3">
           <div>
             <h3 className="h4 mb-1">Rainfall Trend</h3>
-            <p className="text-body-secondary mb-0">Sample rainfall totals for the last 7 days.</p>
+            <p className="text-body-secondary mb-0">
+              {stormName && zipCode && location
+                ? `${stormName} rainfall totals for ${location} (${zipCode}).`
+                : 'Sample rainfall totals for the last 7 days.'}
+            </p>
           </div>
           <div className="badge text-bg-primary rounded-pill px-3 py-2">Wettest day: {wettestDay.inches}"</div>
         </div>

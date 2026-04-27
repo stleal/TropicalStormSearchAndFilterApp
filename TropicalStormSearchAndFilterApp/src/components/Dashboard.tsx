@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AirPressure from './AirPressure'
 import Rainfall from './Rainfall'
 import WindSpeed from './WindSpeed'
@@ -6,15 +6,25 @@ import {
   airPressureData,
   alertItems,
   defaultStormId,
-  rainfallData,
+  rainfallByStormId,
   stormData,
   windSpeedData,
 } from '../config/appData'
 
 function Dashboard() {
   const [selectedStormId, setSelectedStormId] = useState(defaultStormId)
-  const selectedStorm  = stormData.find((storm) => storm.id === selectedStormId) ?? stormData[0]
-  const latestRainfall = rainfallData[rainfallData.length - 1]
+  const selectedStorm = stormData.find((storm) => storm.id === selectedStormId) ?? stormData[0]
+  const rainfallProfiles = rainfallByStormId[selectedStorm.id] ?? []
+  const [selectedZipCode, setSelectedZipCode] = useState(rainfallProfiles[0]?.zipCode ?? '')
+
+  useEffect(() => {
+    if (!rainfallProfiles.some((profile) => profile.zipCode === selectedZipCode)) {
+      setSelectedZipCode(rainfallProfiles[0]?.zipCode ?? '')
+    }
+  }, [rainfallProfiles, selectedZipCode])
+
+  const selectedRainfall = rainfallProfiles.find((profile) => profile.zipCode === selectedZipCode) ?? rainfallProfiles[0]
+  const latestRainfall = selectedRainfall?.data[selectedRainfall.data.length - 1]
   const riskToneClass = selectedStorm.landfallRisk === 'Extreme' ? 'danger' : selectedStorm.landfallRisk === 'High' ? 'warning' : 'secondary'
   const summaryCards = [
     {
@@ -43,8 +53,8 @@ function Dashboard() {
     },
     {
       title: 'Rainfall',
-      value: `${latestRainfall.inches} in`,
-      detail: latestRainfall.advisory,
+      value: latestRainfall ? `${latestRainfall.inches} in` : 'N/A',
+      detail: selectedRainfall ? `${selectedRainfall.location} · ${latestRainfall?.advisory ?? 'No advisory'}` : 'No rainfall profile selected',
       href: '#rainfall',
     },
     {
@@ -113,6 +123,23 @@ function Dashboard() {
                     ))}
                   </select>
                 </div>
+                <div className="dashboard-storm-picker">
+                  <label className="form-label fw-semibold small text-uppercase text-body-secondary mb-2" htmlFor="dashboard-zip-select">
+                    Select ZIP
+                  </label>
+                  <select
+                    id="dashboard-zip-select"
+                    className="form-select dashboard-storm-select"
+                    value={selectedRainfall?.zipCode ?? ''}
+                    onChange={(event) => setSelectedZipCode(event.target.value)}
+                  >
+                    {rainfallProfiles.map((profile) => (
+                      <option key={profile.zipCode} value={profile.zipCode}>
+                        {profile.zipCode} · {profile.location}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               <div className="row g-3">
@@ -140,8 +167,10 @@ function Dashboard() {
                 <div className="col-sm-6 col-xl-3">
                   <div className="border rounded-4 p-3 h-100 bg-success-subtle">
                     <p className="small text-uppercase fw-semibold text-body-secondary mb-2">Rainfall</p>
-                    <h4 className="h3 mb-1">{latestRainfall.inches} in</h4>
-                    <p className="mb-0 text-body-secondary">{latestRainfall.advisory}</p>
+                    <h4 className="h3 mb-1">{latestRainfall ? `${latestRainfall.inches} in` : 'N/A'}</h4>
+                    <p className="mb-0 text-body-secondary">
+                      {selectedRainfall ? `${selectedRainfall.location} · ${latestRainfall?.advisory ?? 'No advisory'}` : 'No rainfall profile selected'}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -187,7 +216,12 @@ function Dashboard() {
           <AirPressure data={airPressureData} />
         </div>
         <div className="col-12 col-xl-4">
-          <Rainfall data={rainfallData} />
+          <Rainfall
+            data={selectedRainfall?.data ?? []}
+            zipCode={selectedRainfall?.zipCode}
+            location={selectedRainfall?.location}
+            stormName={selectedStorm.name}
+          />
         </div>
       </div>
     </section>
